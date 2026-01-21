@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//new apis only cr
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
