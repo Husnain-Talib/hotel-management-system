@@ -1,13 +1,11 @@
 package com.managment_system.hms.entity;
 
-
-
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 
 @Entity
-@Data // Lombok generates Getters, Setters, ToString, etc.
+@Data
 @Table(name = "rooms")
 public class Room {
 
