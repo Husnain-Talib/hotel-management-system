@@ -27,4 +27,17 @@ public class GuestService {
         return guestRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found with id: " + id));
     }
+
+    public Guest guestUpdateById(Long id, Guest guest){
+        return guestRepository.findById(id)
+                .map(existingGuest ->{
+                    existingGuest.setCompleteName(guest.getCompleteName());
+                    existingGuest.setPhoneNumber(guest.getPhoneNumber());
+                    existingGuest.setEmail(guest.getEmail());
+                    existingGuest.setGender(guest.getGender());
+
+                    return guestRepository.save(existingGuest);
+                })
+                .orElseThrow(()->new RuntimeException("Guest not found" + id));
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-//new apis only cr
+//new apis only cru
 @RestController
 @RequestMapping("/guest")
 public class GuestController {
@@ -32,5 +32,11 @@ public class GuestController {
         Guest findGuest = guestService.guestById(id);
         return ResponseEntity.ok(findGuest);
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateGuestById(@PathVariable Long id, @RequestBody Guest guest){
+        Guest guest1 = guestService.guestUpdateById(id, guest);
+        return ResponseEntity.ok(guest1);
     }
 }
