@@ -5,11 +5,17 @@ import com.managment_system.hms.repository.GuestRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 @Service
 public class GuestService {
 
     private final GuestRepository guestRepository;
+
+    private static final Logger log = LoggerFactory.getLogger(GuestService.class);
 
     public GuestService(GuestRepository guestRepository){
         this.guestRepository=guestRepository;
@@ -39,5 +45,31 @@ public class GuestService {
                     return guestRepository.save(existingGuest);
                 })
                 .orElseThrow(()->new RuntimeException("Guest not found" + id));
+    }
+
+    public void deleteGuest(Long id){
+        if((id==null) || (!guestRepository.existsById(id))){
+            throw new RuntimeException("ID did not exist " + id);
+        }
+         guestRepository.deleteById(id);
+
+    }
+
+    public Guest updateGuestByPatch(Long id, Guest guest){
+        Guest guest1 = guestRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("ID not found "+ id));
+        if(guest.getCompleteName()!=null){
+            guest1.setCompleteName(guest.getCompleteName());
+        }
+        if(guest.getPhoneNumber()!=null){
+            guest1.setPhoneNumber(guest.getPhoneNumber());
+        }
+        if(guest.getEmail()!=null){
+            guest1.setEmail(guest.getEmail());
+        }
+        if(guest.getGender()!=null){
+            guest1.setGender(guest.getGender());
+        }
+        return guestRepository.save(guest1);
     }
 }
