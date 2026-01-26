@@ -11,24 +11,55 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    // Constructor Injection (Best Practice over @Autowired)
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
 
-    // 1. Save a new room
     public Room saveRoom(Room room) {
         return roomRepository.save(room);
     }
 
-    // 2. Get all rooms
     public List<Room> getAllRooms() {
         return roomRepository.findAll();
     }
 
-    // 3. Get room by ID
     public Room getRoomById(Long id) {
         return roomRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Room not found with id: " + id));
+    }
+
+    public Room updateRoomById(Long id, Room room){
+        Room existingRoom = roomRepository.findById(id).orElseThrow(()-> new RuntimeException("Room ID did not match to any Room"));
+
+            existingRoom.setRoomNumber(room.getRoomNumber());
+            existingRoom.setType(room.getType());
+            existingRoom.setPricePerNight(room.getPricePerNight());
+            roomRepository.save(existingRoom);
+
+        return existingRoom;
+    }
+
+    public Room updateRoomUsingPatch(Long id, Room room){
+        Room existingRoom = roomRepository.findById(id).orElseThrow(()-> new RuntimeException("ID not found"));
+
+        if (room.getRoomNumber() != null) {
+            existingRoom.setRoomNumber(room.getRoomNumber());
+        }
+        if (room.getType() != null) {
+            existingRoom.setType(room.getType());
+        }
+        if (room.getPricePerNight() != null) {
+            existingRoom.setPricePerNight(room.getPricePerNight());
+        }
+
+        return roomRepository.save(existingRoom);
+
+    }
+
+    public void deleteRoomById(Long id){
+        if(!roomRepository.existsById(id)){
+            throw new RuntimeException("ID did not found {}" + id);
+        }
+      roomRepository.deleteById(id);
     }
 }

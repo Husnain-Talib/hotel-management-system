@@ -8,8 +8,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 @Service
 public class GuestService {
 
@@ -56,20 +54,20 @@ public class GuestService {
     }
 
     public Guest updateGuestByPatch(Long id, Guest guest){
-        Guest guest1 = guestRepository.findById(id)
+        Guest existingGuest = guestRepository.findById(id)
                 .orElseThrow(()-> new RuntimeException("ID not found "+ id));
         if(guest.getCompleteName()!=null){
-            guest1.setCompleteName(guest.getCompleteName());
+            existingGuest.setCompleteName(guest.getCompleteName());
         }
         if(guest.getPhoneNumber()!=null){
-            guest1.setPhoneNumber(guest.getPhoneNumber());
+            existingGuest.setPhoneNumber(guest.getPhoneNumber());
         }
         if(guest.getEmail()!=null){
-            guest1.setEmail(guest.getEmail());
+            existingGuest.setEmail(guest.getEmail());
         }
         if(guest.getGender()!=null){
-            guest1.setGender(guest.getGender());
+            existingGuest.setGender(guest.getGender());
         }
-        return guestRepository.save(guest1);
+        return guestRepository.save(existingGuest);
     }
 }
